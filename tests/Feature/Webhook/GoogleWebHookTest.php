@@ -4,10 +4,27 @@ declare(strict_types=1);
 
 use function Pest\Laravel\postJson;
 
+use App\Models\SubscriptionEvent;
+use Illuminate\Support\Facades\Http;
+
 it('the google webhook endpoint works', function () {
     $payload = getPayload();
 
     $response = postJson('/api/webhook', $payload, ['X-Webhook-Source' => 'google']);
+
+    $response->assertStatus(204);
+});
+
+it('processes subscription purchase notification', function () {
+    $payload = getPayload();
+    $subscriptionEvents = SubscriptionEvent::all(); 
+    //dd($subscriptionEvents);
+
+    Http::fake();
+
+    $response = postJson('/api/webhook', $payload, ['X-Webhook-Source' => 'google']);
+
+    Http::assertSentCount(1);
 
     $response->assertStatus(204);
 });
