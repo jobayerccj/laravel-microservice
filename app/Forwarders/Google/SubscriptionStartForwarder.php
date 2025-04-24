@@ -4,21 +4,31 @@ declare(strict_types=1);
 
 namespace App\Forwarders\Google;
 
-use App\DTOs\Google\Subscription;
+use App\DTOs\Google\Subscription as GoogleSubscription;
 use App\DTOs\SubscriptionEventCategory;
 use App\Contracts\GoogleSubscriptionForwarder;
+use App\DTOs\AudienceGrid\Subscription as AudienceGridSubscription;
+use App\Mappers\Google\SubscriptionMapper;
+use App\Validators\SubscriptionValidator;
 
 class SubscriptionStartForwarder implements GoogleSubscriptionForwarder
 {
-    public function supports(Subscription $subscription): bool
+    public function __construct(
+        private SubscriptionValidator $validator,
+    ) {
+    }
+
+    public function supports(GoogleSubscription $subscription): bool
     {
         return $subscription->category === SubscriptionEventCategory::START->value;
     }
 
-    public function forward(Subscription $subscription): void
+    public function forward(GoogleSubscription $subscription): void
     {
-        // Logic to forward the subscription start event to Google
-        // This is a placeholder implementation
-        dd('forwarer', $subscription);
+       $audienceGridSubscription = (new SubscriptionMapper())->mapToAudienceGrid($subscription);
+
+       $this->validator->validate($audienceGridSubscription, AudienceGridSubscription::rules());
+
+       dd($audienceGridSubscription);
     }
 }

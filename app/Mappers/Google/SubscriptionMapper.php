@@ -33,8 +33,6 @@ class SubscriptionMapper
         } catch (Throwable $throwable) {
             throw new WebhookException("Mapping failed. Reason: " . $throwable->getMessage());
         }
-
-        return $audienceGridSubscription;
     }
 
 }

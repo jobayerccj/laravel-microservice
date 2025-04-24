@@ -13,7 +13,8 @@ test('supports', function(
     bool $appleShouldHandled,
 ) {
     $mockFactory = Mockery::mock(SubscriptionFactory::class);
-    $googleHandler = new GoogleWebhookHandler($mockFactory);
+
+    $googleHandler = new GoogleWebhookHandler($mockFactory, []);
     $appleHandler = new AppleWebhookHandler();
 
     $webhook = new Webhook($platform, ['key' => 'value']);

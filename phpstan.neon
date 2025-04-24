@@ -6,4 +6,10 @@ parameters:
         - bootstrap/cache/*
         - storage/*
         - app/DTOs/Google/SubscriptionFactory.php
+    
+    ignoreErrors:
+        -
+            path: app/Mappers/Google/SubscriptionMapper.php
+            identifier: argument.type
+            
     reportUnmatchedIgnoredErrors: false

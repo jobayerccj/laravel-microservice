@@ -7,6 +7,9 @@ namespace App\DTOs\AudienceGrid;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @implements Arrayable<string, mixed>
+ */
 class Subscription implements Arrayable
 {
     private string $event;
@@ -22,6 +25,32 @@ class Subscription implements Arrayable
     private string $email;
     private string $region;
 
+    /**
+     *
+     * @return array<string, mixed>
+     */
+    public static function rules(): array
+    {
+        return [
+            'event' => ['required', 'string'],
+            'properties.subscription_id' => ['required', 'string'],
+            'properties.platform' => ['required', 'string'],
+            'properties.auto_renew_status' => ['required', 'boolean'],
+            'properties.currency' => ['required', 'string', 'size:3'],
+            'properties.in_trial' => ['required', 'boolean'],
+            'properties.product_name' => ['required', 'string'],
+            'properties.renewal_date' => ['required', 'date', 'after_or_equal:properties.start_date'],
+            'properties.start_date' => ['required', 'date'],
+            'user.id' => ['required', 'string'],
+            'user.email' => ['required', 'email'],
+            'user.region' => ['required', 'string', 'size:2'],
+        ];
+    }
+
+    /**
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [
