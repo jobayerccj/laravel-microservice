@@ -7,17 +7,24 @@ namespace App\Handlers;
 
 use App\DTOs\Webhook;
 use App\Contracts\WebhookHandler;
-use App\DTOs\Google\SubscriptionFactory;
 use Illuminate\Support\Facades\Log;
+use App\DTOs\Google\SubscriptionFactory;
+use App\Contracts\GoogleSubscriptionForwarder;
 
 class GoogleWebhookHandler implements WebhookHandler
 {
     private const string SUPPORTED_PLATFORM = 'google';
 
-    public function __construct(private SubscriptionFactory $subscriptionFactory)
-    {
-        // You can inject dependencies here if needed
-    }
+    /**
+     * @param SubscriptionFactory $subscriptionFactory
+     * @param iterable<GoogleSubscriptionForwarder> $forwarders
+     */
+    public function __construct(
+        private SubscriptionFactory $subscriptionFactory,
+        private iterable $forwarders,
+        ) {
+        }
+
     public function supports(Webhook $webhook): bool
     {
         return strtolower($webhook->getPlatform()) === self::SUPPORTED_PLATFORM;
@@ -30,7 +37,13 @@ class GoogleWebhookHandler implements WebhookHandler
         //Log::info('Google Webhook received', ['payload' => $webhook->getPayload()]);
         $subscripton = $this->subscriptionFactory->create($webhook);
 
-        dd($subscripton);
+        foreach($this->forwarders as $forwarder) {
+            if ($forwarder->supports($subscripton)) {
+                $forwarder->forward($subscripton);
+            }
+        }
+
+        //dd($subscripton);
     }
     
 }

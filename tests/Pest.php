@@ -1,5 +1,10 @@
 <?php
 
+use Carbon\CarbonImmutable;
+use App\DTOs\Google\Subscription;
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -43,7 +48,43 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function createSubscription($overrides = [])
 {
-    // ..
+    $defaults = [
+        'subscription_id' => 'premium_monthly',
+        'notification_type' => 4,
+        'in_trial' => false,
+        'event_time' => CarbonImmutable::now(),
+        'event' => 'subscription_started',
+        'category' => 'START',
+        'product_id' => 'premium_monthly',
+        'order_id' => 'GPA.1234-5678-9012-34567',
+        'user_id' => 'USER-001',
+        'email' => 'joe@example.com',
+        'auto_renewing' => true,
+        'purchase_date' => CarbonImmutable::now(),
+        'expiry_date' => CarbonImmutable::now()->addMonth(),
+        'currency' => 'USD',
+        'region' => 'US',
+    ];
+
+    $subscriptionData = array_merge($defaults, $overrides);
+    
+    return new Subscription(
+        subscriptionId: $subscriptionData['subscription_id'],
+        notificationType: $subscriptionData['notification_type'],
+        inTrial: $subscriptionData['in_trial'],
+        eventTime: $subscriptionData['event_time'],
+        event: $subscriptionData['event'],
+        category: $subscriptionData['category'],
+        productId: $subscriptionData['product_id'],
+        orderId: $subscriptionData['order_id'],
+        userId: $subscriptionData['user_id'],
+        email: $subscriptionData['email'],
+        autoRenewing: $subscriptionData['auto_renewing'],
+        purchaseDate: $subscriptionData['purchase_date'],
+        expiryDate: $subscriptionData['expiry_date'],
+        currency: $subscriptionData['currency'],
+        region: $subscriptionData['region']
+    );
 }
