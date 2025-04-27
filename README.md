@@ -1,10 +1,16 @@
 
-## About Webhook Handler
-Webhook Handler is a Laravel-based microservice designed to handle and process webhooks from Google services and Apple services (Although I have used dummy responsese, similar approach can be used for real datta). 
+## Project Structure
+This repository contains two separate projects:
+1. Webhook Handler
+- Handles incoming webhook events from external services.
+Responsible for validating, processing, and storing webhook data.
 
-- Built with clean architecture in mind, it utilizes Data Transfer Objects (DTOs) alongside a data mapper to ensure consistent and validated data transformation. 
-- A dedicated data forwarder component allows seamless forwarding of processed data to other internal services or endpoints. 
-- The project is fully tested with both unit and feature tests using the Pest testing framework. 
+2. External API
+- Provides a set of APIs to external clients.
+Focuses on exposing application data and functionalities securely.
+
+Each project has its own setup, configuration, and dependencies.
+Please refer to the respective project folders for detailed setup instructions.
 
 
 ## License
