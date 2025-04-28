@@ -32,9 +32,7 @@ class GoogleWebhookHandler implements WebhookHandler
 
     public function handle(Webhook $webhook): void
     {
-        // Handle the Google webhook here
-        // For example, you can log the payload or process it as needed
-        //Log::info('Google Webhook received', ['payload' => $webhook->getPayload()]);
+        Log::info('Google Webhook received', ['payload' => $webhook->getPayload()]);
         $subscripton = $this->subscriptionFactory->create($webhook);
 
         foreach($this->forwarders as $forwarder) {
@@ -42,8 +40,6 @@ class GoogleWebhookHandler implements WebhookHandler
                 $forwarder->forward($subscripton);
             }
         }
-
-        //dd($subscripton);
     }
     
 }

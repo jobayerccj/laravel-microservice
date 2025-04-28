@@ -36,7 +36,7 @@ return [
     ],
 
     'audiencegrid' => [
-        'api_url' => env('AUDIENCEGRID_API_URL', 'https://api.audiencegrid.com/v1/webhook'),
+        'api_url' => env('AUDIENCEGRID_API_URL', 'https://api.audiencegrid.com/events'),
     ],
 
 ];
